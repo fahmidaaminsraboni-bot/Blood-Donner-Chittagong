@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রক্তবন্ধু - জরুরি রক্তদাতা সন্ধান প্ল্যাটফর্ম (চট্টগ্রাম)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-red-600 text-white shadow-md">
+        <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-3xl">🩸</span>
+                <h1 class="text-2xl font-bold tracking-wide">রক্তবন্ধু</h1>
+            </div>
+            <p class="text-xs bg-red-700 px-3 py-1 rounded-full font-medium">চট্টগ্রাম বিভাগ</p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl mx-auto px-4 py-6 w-full flex-grow">
+        
+        <!-- Intro Banner -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mb-6 text-center">
+            <h2 class="text-xl font-bold text-slate-900 mb-1">জরুরি মুহূর্তে রক্তের সন্ধান বা রেজিস্টার করুন</h2>
+            <p class="text-sm text-slate-500">চট্টগ্রামের যেকোনো এলাকার রক্তদাতা সহজে খুঁজুন এবং মানবতার সেবায় যুক্ত হোন।</p>
+        </div>
+
+        <!-- Search Section -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mb-6">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <span>🔍</span> দাতার তথ্য অনুসন্ধান
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">রক্তের গ্রুপ</label>
+                    <select id="searchGroup" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white">
+                        <option value="">সকল গ্রুপ</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">এরিয়া বা থানা</label>
+                    <select id="searchLocation" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white">
+                        <option value="">সকল এরিয়া</option>
+                        <option value="ফতেয়াবাদ / হাটহাজারী">ফতেয়াবাদ / হাটহাজারী</option>
+                        <option value="চান্দগাঁও">চান্দগাঁও</option>
+                        <option value="পাঁচলাইশ">পাঁচলাইশ</option>
+                        <option value="জিইসি / গোলপাহাড়">জিইসি / গোলপাহাড়</option>
+                        <option value="কোতোয়ালী">কোতোয়ালী</option>
+                        <option value="আগ্রাবাদ">আগ্রাবাদ</option>
+                        <option value="হালিশহর">হালিশহর</option>
+                        <option value="পতেঙ্গা / ইপিজেড">পতেঙ্গা / ইপিজেড</option>
+                        <option value="খুলশী">খুলশী</option>
+                        <option value="বায়েজিদ বোস্তামী">বায়েজিদ বোস্তামী</option>
+                        <option value="চকবাজার">চকবাজার</option>
+                        <option value="বোয়ালখালী">বোয়ালখালী</option>
+                        <option value="রাউজান">রাউজান</option>
+                        <option value="অন্যান্য চট্টগ্রাম">অন্যান্য চট্টগ্রাম</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="searchDonors()" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-xl transition duration-200 shadow-sm">
+                খুঁজুন
+            </button>
+        </section>
+
+        <!-- Search Results -->
+        <section id="resultsSection" class="mb-8 hidden">
+            <h3 class="text-lg font-bold text-slate-800 mb-3">অনুসন্ধানের ফলাফল</h3>
+            <div id="donorResults" class="space-y-3"></div>
+        </section>
+
+        <!-- Recent Donors List -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mb-6">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <span>📋</span> নিবন্ধিত রক্তদাতাগণ
+                </h3>
+                <button onclick="loadDonors()" class="text-xs text-red-600 hover:underline font-medium">রিফ্রেশ করুন 🔄</button>
+            </div>
+            <div id="recentDonors" class="space-y-3">
+                <p class="text-sm text-slate-400 text-center py-4">ডেটা লোড হচ্ছে...</p>
+            </div>
+        </section>
+
+        <!-- Registration Section -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <span>✍️</span> রক্তদাতা হিসেবে রেজিস্টার করুন
+            </h3>
+            <form id="donorForm" onsubmit="handleRegistration(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">আপনার পূর্ণ নাম</label>
+                    <input type="text" id="name" required placeholder="যেমন: মোহাম্মদ আব্দুল্লাহ" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">রক্তের গ্রুপ</label>
+                        <select id="bloodGroup" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white">
+                            <option value="">গ্রুপ বেছে নিন</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">মোবাইল নম্বর (যোগাযোগের জন্য)</label>
+                        <input type="tel" id="phone" required placeholder="01XXXXXXXXX" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">এরিয়া বা থানা নির্বাচন করুন</label>
+                    <select id="location" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white">
+                        <option value="">আপনার এলাকা বেছে নিন</option>
+                        <option value="ফতেয়াবাদ / হাটহাজারী">ফতেয়াবাদ / হাটহাজারী</option>
+                        <option value="চান্দগাঁও">চান্দগাঁও</option>
+                        <option value="পাঁচলাইশ">পাঁচলাইশ</option>
+                        <option value="জিইসি / গোলপাহাড়">জিইসি / গোলপাহাড়</option>
+                        <option value="কোতোয়ালী">কোতোয়ালী</option>
+                        <option value="আগ্রাবাদ">আগ্রাবাদ</option>
+                        <option value="হালিশহর">হালিশহর</option>
+                        <option value="পতেঙ্গা / ইপিজেড">পতেঙ্গা / ইপিজেড</option>
+                        <option value="খুলশী">খুলশী</option>
+                        <option value="বায়েজিদ বোস্তামী">বায়েজিদ বোস্তামী</option>
+                        <option value="চকবাজার">চকবাজার</option>
+                        <option value="বোয়ালখালী">বোয়ালখালী</option>
+                        <option value="রাউজান">রাউজান</option>
+                        <option value="অন্যান্য চট্টগ্রাম">অন্যান্য চট্টগ্রাম</option>
+                    </select>
+                </div>
+                <button type="submit" id="submitBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2.5 rounded-xl transition duration-200 shadow-sm">
+                    রেজিস্ট্রেশন সম্পন্ন করুন
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 text-center py-4 text-xs text-slate-500 mt-8 space-y-1">
+        <p>সবার কল্যাণে উন্মুক্ত প্ল্যাটফর্ম | চট্টগ্রাম</p>
+        <p class="text-slate-400 font-medium">উদ্যোগ ও পরিচালনায়: <span class="text-slate-600 font-semibold">আইনুল ইসলাম</span></p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwIo2V0Lec2Vxgsg7I77ooesTTR_cRiGEC25ipXHHTH6lJdRDQ5HsMtBRZEWamH0v79/exec";
+
+        let allDonors = [];
+
+        async function loadDonors() {
+            const container = document.getElementById('recentDonors');
+            container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">ডেটা লোড হচ্ছে...</p>`;
+            
+            try {
+                let response = await fetch(SCRIPT_URL);
+                allDonors = await response.json();
+                
+                if (allDonors.length === 0) {
+                    container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">এখনো কোনো রক্তদাতা রেজিস্টার করেননি।</p>`;
+                    return;
+                }
+
+                // Reverse to show latest first
+                let recent = [...allDonors].reverse().slice(0, 10);
+                container.innerHTML = recent.map(donor => `
+                    <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-900">${donor.name}</span>
+                                <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-md">${donor.bloodGroup}</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-0.5">📍 ${donor.location}</p>
+                        </div>
+                        <a href="tel:${donor.phone}" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition duration-150 flex items-center gap-1">
+                            📞 কল করুন (${donor.phone})
+                        </a>
+                    </div>
+                `).join('');
+            } catch (error) {
+                container.innerHTML = `<p class="text-sm text-red-500 text-center py-4">ডেটা লোড করতে সমস্যা হয়েছে।</p>`;
+            }
+        }
+
+        async function handleRegistration(event) {
+            event.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "সংরক্ষণ করা হচ্ছে...";
+            btn.disabled = true;
+
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                bloodGroup: document.getElementById('bloodGroup').value,
+                phone: document.getElementById('phone').value.trim(),
+                location: document.getElementById('location').value
+            };
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                alert('ধন্যবাদ! আপনার রেজিস্ট্রেশন সফলভাবে সম্পন্ন হয়েছে।');
+                document.getElementById('donorForm').reset();
+                loadDonors();
+            } catch (error) {
+                alert('দুঃখিত, কোনো সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+            } finally {
+                btn.innerText = "রেজিস্ট্রেশন সম্পন্ন করুন";
+                btn.disabled = false;
+            }
+        }
+
+        function searchDonors() {
+            const searchGroup = document.getElementById('searchGroup').value;
+            const searchLocation = document.getElementById('searchLocation').value;
+
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContainer = document.getElementById('donorResults');
+
+            const filtered = allDonors.filter(donor => {
+                const matchGroup = searchGroup === "" || donor.bloodGroup === searchGroup;
+                const matchLocation = searchLocation === "" || donor.location === searchLocation;
+                return matchGroup && matchLocation;
+            });
+
+            resultsSection.classList.remove('hidden');
+
+            if (filtered.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-sm text-slate-500 text-center py-4 bg-slate-50 rounded-xl border border-slate-100">দুঃখিত, এই তথ্যে কোনো রক্তদাতা পাওয়া যায়নি।</p>`;
+                return;
+            }
+
+            resultsContainer.innerHTML = filtered.map(donor => `
+                <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-900">${donor.name}</span>
+                            <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-md">${donor.bloodGroup}</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5">📍 ${donor.location}</p>
+                    </div>
+                    <a href="tel:${donor.phone}" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition duration-150 flex items-center gap-1">
+                        📞 কল করুন (${donor.phone})
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        window.onload = loadDonors;
+    </script>
+</body>
+</html>
